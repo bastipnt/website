@@ -75,6 +75,5 @@ jobs:
           ssh-private-key: ${{ secrets.HCOLUD_SSH }}
       - run: mkdir -p ~/.ssh/ && ssh-keyscan -H $HETZNER_SERVER >> ~/.ssh/known_hosts
       - run: scp -r * root@$HETZNER_SERVER:/root/bastipnt
-      - run: ssh root@$HETZNER_SERVER cd bastipnt
-      - run: ssh root@$HETZNER_SERVER docker compose down
-      - run: ssh root@$HETZNER_SERVER docker compose up -d
+      - run: ssh root@$HETZNER_SERVER cd bastipnt && docker compose down
+      - run: ssh root@$HETZNER_SERVER cd bastipnt && docker compose up -d
