@@ -68,7 +68,7 @@ jobs:
         with:
           name: bastipnt-website
       - name: Deploy to Hetzner
-      - uses: webfactory/ssh-agent@v0.4.1
+        uses: webfactory/ssh-agent@v0.4.1
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - run: mkdir -p ~/.ssh/ && ssh-keyscan -H $HETZNER_SERVER >> ~/.ssh/known_hosts
