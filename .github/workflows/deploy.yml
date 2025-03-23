@@ -62,6 +62,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: Ubuntu-20.04
     needs: build
+    env:
+      HETZNER_SERVER: 95.217.159.233
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@v4
