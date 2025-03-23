@@ -18,6 +18,13 @@ function App() {
         </a>{" "}
         ✨
       </p>
+      <p>
+        Also checkout my website on online privacy and learn how to protect
+        yourself from web tracking:{" "}
+        <a href="https://online-privacy.bastipnt.de/">
+          https://online-privacy.bastipnt.de/
+        </a>
+      </p>
     </>
   );
 }
