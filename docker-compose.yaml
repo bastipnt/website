@@ -1,0 +1,24 @@
+services:
+  bastipnt-website:
+    image: caddy:latest
+    restart: unless-stopped
+    networks:
+      - caddy
+    labels:
+      caddy: bastipnt.de, www.bastipnt.de
+      caddy.reverse_proxy: "{{upstreams}}"
+      caddy.header: /*
+      caddy.header.Strict-Transport-Security: '"max-age=15552000;"'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./dist:/srv
+      - bastipnt_data:/data
+      - bastipnt_config:/config
+
+volumes:
+  bastipnt_data:
+  bastipnt_config:
+
+networks:
+  caddy:
+    external: true

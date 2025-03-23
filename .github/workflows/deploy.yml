@@ -22,7 +22,7 @@ concurrency:
 jobs:
   build:
     environment:
-      name: github-pages
+      name: website-deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -47,17 +47,32 @@ jobs:
       - name: Build with Bun
         run: bun run build
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          path: dist
+          name: bastipnt-website
+          path: |
+            dist
+            Caddyfile
+            docker-compose.yaml
+          overwrite: true
 
   deploy:
     environment:
-      name: github-pages
+      name: website-deploy
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: Ubuntu-20.04
     needs: build
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: bastipnt-website
+      - name: Deploy to Hetzner
+      - uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - run: mkdir -p ~/.ssh/ && ssh-keyscan -H $HETZNER_SERVER >> ~/.ssh/known_hosts
+      - run: scp -r * root@$HETZNER_SERVER:/root/bastipnt
+      - run: ssh root@$HETZNER_SERVER cd bastipnt
+      - run: ssh root@$HETZNER_SERVER docker compose down
+      - run: ssh root@$HETZNER_SERVER docker compose up -d
